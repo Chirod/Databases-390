@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+	<head>
+		<title> Players in Tournament </title>
+	</head>
+	<body>
+	<form id="showPlayers" action="/players_for_tournament.html" method="post">
+
+		Tournament Name:
+			<select name="tournament">
+				{% for t in tournaments %}
+				<option value={{t[0]}}> {{t[0]}} </option>
+				{% endfor %}
+			</select><br><br>
+			<input type="submit" value="Submit">
+	</form>
+		<p>
+		{% for r in rows %}
+		<P>
+		{{r}}
+		</P>
+		{% endfor %}
+		</p>
+	</body>
+</html>
+
