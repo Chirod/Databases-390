@@ -71,13 +71,41 @@ def addOfficial():
 	else:
 		return render_template("add_official.html")
 
-@webapp.route("/add_player_to_tournament.html")
+@webapp.route("/add_player_to_tournament.html", methods=["GET", "POST"])
 def addPlayerToTournament():
-	return render_template("add_player_to_tournament.html")
+	db_connection = connect_to_database()
+	query = "select first_name, last_name, id from players;"
+	players = execute_query(db_connection, query)
+	query = "select name, id from tournaments;"
+	tournaments = execute_query(db_connection, query)
+	if request.method == "POST":
+		print(request.form)
+		player = int(request.form["player"])
+		tournament = int(request.form["tournament"])
+		query = "insert into tournament_player (tid, pid) values (%s, %s)"
+		data = (tournament, player)
+		execute_query(db_connection, query, data)
+	return render_template("add_player_to_tournament.html", players=players, tournaments=tournaments)
 
-@webapp.route("/add_result_to_tournament.html")
+@webapp.route("/add_result_to_tournament.html", methods=["GET","POST"])
 def addesult():
-	return render_template("add_result_to_tournament.html")
+	db_connection = connect_to_database()
+	query = "select first_name, last_name, id from players;"
+	players = execute_query(db_connection, query)
+	query = "select name, id from tournaments;"
+	tournaments = execute_query(db_connection, query)
+	if request.method == "POST":
+		print(request.form)
+		player = int(request.form["player"])
+		tournament = int(request.form["tournament"])
+		roundid = int(request.form["round"])
+		is_win = request.form["win"]	
+		score = int(request.form["score"])
+		query = "insert into results (tournament_id, round_id, player_id, outcome, score) values (%s, %s, %s, %s, %s);"
+		data = (tournament, roundid, player, is_win, score)
+		print(data)
+		execute_query(db_connection, query, data)
+	return render_template("add_result_to_tournament.html", players=players, tournaments=tournaments)
 
 @webapp.route("/add_tournament.html", methods=["GET", "POST"])
 def addTournament():
@@ -96,13 +124,33 @@ def addTournament():
 		execute_query(db_connection, query, data)
 	return render_template("add_tournament.html", officials = officials)
 
-@webapp.route("/end_tournament.html")
+@webapp.route("/end_tournament.html", methods=["GET", "POST"])
 def endTournament():
-	return render_template("end_tournament.html")
+	db_connection = connect_to_database()
+	query = "select name from tournaments;"
+	tournaments = execute_query(db_connection, query)
+	if request.method == "POST":
+		query = " update tournaments set end_date = %s where name = %s;"
+		print(request.form)
+		name = request.form["Tournament"]
+		date = request.form["sd"]
+		data = (date, name)
+		print(data)
+		execute_query(db_connection, query, data)
+	return render_template("end_tournament.html", tournaments = tournaments)
 
-@webapp.route("/player_results.html")
+@webapp.route("/player_results.html", methods=["GET","POST"])
 def playerResults():
-	return render_template("player_results.html")
+	db_connection = connect_to_database()
+	query = "select first_name, last_name, id from players;"
+	players = execute_query(db_connection, query)
+	if request.method == "POST":	
+		pname = int(request.form['player'])
+		query =	'select outcome, score from results where player_id = %s;'
+		data = (pname,)
+		result = execute_query(db_connection, query, data)
+		return render_template("player_results.html", results=result, players=players)
+	return render_template("player_results.html", players=players)
 
 @webapp.route("/players_for_tournament.html", methods=["GET", "POST"])
 def playersFortournament():
