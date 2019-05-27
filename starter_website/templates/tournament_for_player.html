@@ -4,11 +4,15 @@
         <title> add a player</title>
     </head>
     <body>
+	<form id="showPlayers" action="/players_for_tournament.html" method="post">
         Player name:
             <select name="Player">
-                <option value="SelectPlayer">Select a Player</option>
+			{% for p in tournaments %}
+			<option value={{p[0]}}> {{p[0]}} </option>
+			{% endfor %}
             </select><br><br>
-        <button type="button"> Execute </button><br>
+	<input type="submit" value="Submit">
+	</form>
         <p> RESULTS APPEAR HERE </p>
     </body>
 </html>

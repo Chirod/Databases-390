@@ -4,13 +4,18 @@
         <title>Add Results</title>
     </head>
     <body>
+<form id="showPlayers" action="/add_result_to_tournament.html" method="post">
         Player Name:
         <select name="Player">
-            <option value="SelectPlayer">Select a Player</option>
+         	{% for p in players %}
+			<option value={{t[0]}}> {{t[0]}} </option>
+		{% endfor %}
         </select><br><br>
         Tournament Name:
         <select name="Tournament">
-            <option value="SelectTournament">Select a Tournament</option>
+		{% for t in tournaments %}
+			<option value={{t[0]}}> {{t[0]}} </option>
+		{% endfor %}
         </select><br><br>
         <label for="round">Round Number: </label><input id="round" type="number" /><br>
         <p> Result: </p>
@@ -18,7 +23,8 @@
         <input type="checkbox" name="Lose" value="Lose"> Lose<br>
         <input type="checkbox" name="Draw" value="Draw"> Draw<br><br>
         <label for="score">Score: </label><input id="score" type="number" value="0" /><br><br>
-        <button type="button"> Execute </button>
+	<input type="submit" value="Submit">
+</form>
     </body>
 </html>
 

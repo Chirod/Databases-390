@@ -4,12 +4,17 @@
         <title> End a Tournament</title>
     </head>
     <body>
-        Name:
+<form id="showPlayers" action="/end_tournament.html" method="post">
+	Name:
             <select name="Tournament">
-                <option value="SelectTournament">Select a Tournament</option>
-            </select><br><br>
+ 		{% for t in tournaments %}
+			<option value={{t[0]}}> {{t[0]}} </option>
+		{% endfor %}
+	    </select><br><br>
         End Date:<input type="date" name="sd" value=""><br><br>
         <button type="button"> Execute </button>
+	<input type="submit" value="Submit">
+</form>
     </body>
 </html>
 

@@ -6,9 +6,15 @@
     <body>
         Tournament Name:
             <select name="Tournament">
-                <option value="SelectTournament">Select a Tournament</option>
+			{% for t in tournaments %}
+			<option value={{t[0]}}> {{t[0]}} </option>
+			{% endfor %}
             </select><br><br>
-        <button type="button"> Execute </button><br><br>
-        <p> RESULTS WILL APPEAR HERE </p>
+	<input type="submit" value="Submit">
+		{% for r in results %}
+	        	<p> 
+			{{r[0]}}
+			</p>
+		{% endfor %}
     </body>
 </html>

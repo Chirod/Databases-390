@@ -4,12 +4,18 @@
         <title> results for player </title>
     </head>
     <body>
+<form id="showPlayers" action="/player_results.html" method="post">
         Player Name:
             <select name="Player">
-                <option value="SelectPlayer">Select a Player</option>
+		{% for p in players %}
+			<option value={{p[0]}}> {{p[0]}} </option>
+		{% endfor %}
             </select><br><br>
 	    <button type="button"> Execute </button><br>
-        <p>
+ 
+	<input type="submit" value="Submit">
+</form>
+       <p>
             RESULTS WILL APPEAR HERE
         </p>
     </body>

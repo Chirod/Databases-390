@@ -44,13 +44,32 @@ def add_new_people():
 def index():
 	return render_template("index.html")
 
-@webapp.route("/add_player_to_db.html")
+@webapp.route("/add_player_to_db.html", methods=["GET", "POST"])
 def addPlayer():
-	return render_template("add_player_to_db.html")
+	if request.method == "POST":
+		print("add new player!")
+		db_connection = connect_to_database()
+		query = "insert into players (first_name,last_name) values (%s,%s);"
+		fname = request.form['fname']
+		lname = request.form['lname']
+		data = (fname, lname)
+		execute_query(db_connection, query, data)
+		return render_template("add_player_to_db.html")
+	else:
+		return render_template("add_player_to_db.html")
 
-@webapp.route("/add_official.html")
+@webapp.route("/add_official.html", methods=["GET", "POST"])
 def addOfficial():
-	return render_template("add_official.html")
+	if request.method == "POST":
+		db_connection = connect_to_database()
+		query = "insert into officials (first_name,last_name) values (%s,%s);"
+		fname = request.form['fname']
+		lname = request.form['lname']
+		data = (fname, lname)
+		execute_query(db_connection, query, data)
+		return render_template("add_official.html")
+	else:
+		return render_template("add_official.html")
 
 @webapp.route("/add_player_to_tournament.html")
 def addPlayerToTournament():
@@ -60,9 +79,22 @@ def addPlayerToTournament():
 def addesult():
 	return render_template("add_result_to_tournament.html")
 
-@webapp.route("/add_tournament.html")
+@webapp.route("/add_tournament.html", methods=["GET", "POST"])
 def addTournament():
-	return render_template("add_tournament.html")
+	db_connection = connect_to_database()
+	query = "select first_name, last_name, id from officials;"
+	officials = execute_query(db_connection, query)
+	if request.method == "POST":
+		query = "insert into tournaments (name, format, start_date, official_id) values (%s, %s, %s, %s);"
+		print(request.form)
+		name = request.form["name"]
+		t_format = request.form["format"]
+		start_date = request.form["sd"]
+		official_id = request.form["Official"]
+		data = (name, t_format, start_date, official_id)
+		print(data)
+		execute_query(db_connection, query, data)
+	return render_template("add_tournament.html", officials = officials)
 
 @webapp.route("/end_tournament.html")
 def endTournament():

@@ -4,9 +4,11 @@
         <title> Add a Player</title>
     </head>
     <body>
-        First Name: <input type="text" name="FirstName" value=""><br><br>
-        Last Name: <input type="text" name="LastName" value=""><br><br>
-	    <button type="button"> Execute </button>
+<form id="addPayer" action="/add_player_to_db.html" method="post">
+        First Name: <input type="text" name="fname" value=""><br><br>
+        Last Name: <input type="text" name="lname" value=""><br><br>
+	<input type="submit" value="Submit">
+</form>
     </body>
 </html>
 
