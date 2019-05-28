@@ -1,0 +1,9 @@
+<h3>Update Official:</h3>
+<form id="update_official" action="/update_official/{{official[0]}}" method="post">
+  <!-- character_id {{ character_id }} -->
+  <input type="hidden" name="id" value = "{{ official[0] }}">
+  First name: <input type="text" name="fname" value = "{{ official[1] }}"><br>
+  Last name: <input type="text" name="lname" value = "{{ official[2] }}" ><br>
+  <input type="submit" value="Submit">
+ </form>
+<br/>
