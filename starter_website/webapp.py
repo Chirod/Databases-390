@@ -11,16 +11,6 @@ webapp = Flask(__name__)
 def hello():
 	return "Hello World!";
 
-@webapp.route('/browse_bsg_people')
-#the name of this function is just a cosmetic thing
-def browse_people():
-	print("Fetching and rendering people web page")
-	db_connection = connect_to_database()
-	query = "SELECT fname, lname, homeworld, age, character_id from bsg_people;"
-	result = execute_query(db_connection, query).fetchall();
-	print(result)
-	return render_template('people_browse.html', rows=result)
-
 @webapp.route('/add_new_people', methods=['POST','GET'])
 def add_new_people():
 	db_connection = connect_to_database()
@@ -58,19 +48,6 @@ def addPlayer():
 	else:
 		return render_template("add_player_to_db.html")
 
-@webapp.route("/add_official.html", methods=["GET", "POST"])
-def addOfficial():
-	if request.method == "POST":
-		db_connection = connect_to_database()
-		query = "insert into officials (first_name,last_name) values (%s,%s);"
-		fname = request.form['fname']
-		lname = request.form['lname']
-		data = (fname, lname)
-		execute_query(db_connection, query, data)
-		return render_template("add_official.html")
-	else:
-		return render_template("add_official.html")
-
 @webapp.route("/add_player_to_tournament.html", methods=["GET", "POST"])
 def addPlayerToTournament():
 	db_connection = connect_to_database()
@@ -99,7 +76,7 @@ def addesult():
 		player = int(request.form["player"])
 		tournament = int(request.form["tournament"])
 		roundid = int(request.form["round"])
-		is_win = request.form["win"]	
+		is_win = request.form["win"]
 		score = int(request.form["score"])
 		query = "insert into results (tournament_id, round_id, player_id, outcome, score) values (%s, %s, %s, %s, %s);"
 		data = (tournament, roundid, player, is_win, score)
@@ -144,7 +121,7 @@ def playerResults():
 	db_connection = connect_to_database()
 	query = "select first_name, last_name, id from players;"
 	players = execute_query(db_connection, query)
-	if request.method == "POST":	
+	if request.method == "POST":
 		pname = int(request.form['player'])
 		query =	'select outcome, score from results where player_id = %s;'
 		data = (pname,)
@@ -156,9 +133,9 @@ def playerResults():
 def playersFortournament():
 	db_connection = connect_to_database()
 	query = "select name from tournaments"
-	tourns = execute_query(db_connection, query) 
+	tourns = execute_query(db_connection, query)
 	print(request)
-	if request.method == "POST":	
+	if request.method == "POST":
 		tname = request.form['tournament']
 		print(tname, "tname")
 		query =	'select P.first_name, P.last_name from players P inner join tournament_player TP on P.id = TP.pid inner join tournaments T on TP.tid = T.id where T.name = %s;'
@@ -177,53 +154,63 @@ def tournamentResults():
 def tournamentForPlayer():
 	return render_template("tournament_for_player.html")
 
-@webapp.route('/db-test')
-def test_database_connection():
-	print("Executing a sample query on the database using the credentials from db_credentials.py")
+@webapp.route('/browse_officials')
+def browse_officials():
+	print("Fetching and rendering officals web page")
 	db_connection = connect_to_database()
-	query = "SELECT * from bsg_people;"
-	result = execute_query(db_connection, query);
-	return render_template('db_test.html', rows=result)
+	query = "SELECT id, first_name, last_name from officials;"
+	result = execute_query(db_connection, query).fetchall();
+	print(result)
+	return render_template('browse_officials.html', rows=result)
 
-#display update form and process any updates, using the same function
-@webapp.route('/update_people/<int:id>', methods=['POST','GET'])
-def update_people(id):
-	db_connection = connect_to_database()
-	#display existing data
-	if request.method == 'GET':
-		people_query = 'SELECT character_id, fname, lname, homeworld, age from bsg_people WHERE character_id = %s' % (id)
-		people_result = execute_query(db_connection, people_query).fetchone()
-
-		if people_result == None:
-			return "No such person found!"
-
-		planets_query = 'SELECT planet_id, name from bsg_planets'
-		planets_results = execute_query(db_connection, planets_query).fetchall();
-
-		return render_template('people_update.html', planets = planets_results, person = people_result)
-	elif request.method == 'POST':
-		print("Update people!");
-		character_id = request.form['character_id']
+@webapp.route("/add_official", methods=["GET", "POST"])
+def addOfficial():
+	if request.method == "POST":
+		db_connection = connect_to_database()
+		query = "insert into officials (first_name,last_name) values (%s,%s);"
 		fname = request.form['fname']
 		lname = request.form['lname']
-		age = request.form['age']
-		homeworld = request.form['homeworld']
+		data = (fname, lname)
+		execute_query(db_connection, query, data)
+		return redirect('/browse_officials')
+	else:
+		return render_template("add_official.html")
 
-		print(request.form);
+#display update form and process any updates, using the same function
+@webapp.route('/update_official/<int:id>', methods=['POST','GET'])
+def update_official(id):
+    db_connection = connect_to_database()
+    #display existing data
+    if request.method == 'GET':
+        official_query = 'SELECT id, first_name, last_name from officials WHERE id = %s' % (id)
+        official_result = execute_query(db_connection, official_query).fetchone()
 
-		query = "UPDATE bsg_people SET fname = %s, lname = %s, age = %s, homeworld = %s WHERE character_id = %s"
-		data = (fname, lname, age, homeworld, character_id)
-		result = execute_query(db_connection, query, data)
-		print(str(result.rowcount) + " row(s) updated");
+        if official_result == None:
+            return "No such person found!"
 
-		return redirect('/browse_bsg_people')
+        return render_template('update_official.html', official = official_result)
+    elif request.method == 'POST':
+        print("Update Official!");
+        id = request.form['id']
+        fname = request.form['fname']
+        lname = request.form['lname']
 
-@webapp.route('/delete_people/<int:id>')
-def delete_people(id):
-	'''deletes a person with the given id'''
+        print(request.form);
+
+        query = "UPDATE officials SET first_name = %s, last_name = %s WHERE id = %s"
+        data = (fname, lname, id)
+        result = execute_query(db_connection, query, data)
+        print(str(result.rowcount) + " row(s) updated");
+
+        return redirect('/browse_officials')
+
+@webapp.route('/delete_official/<int:id>')
+def delete_official(id):
+	'''deletes the official with the given id'''
 	db_connection = connect_to_database()
-	query = "DELETE FROM bsg_people WHERE character_id = %s"
+	query = "DELETE FROM officials WHERE id = %s"
 	data = (id,)
 
 	result = execute_query(db_connection, query, data)
-	return (str(result.rowcount) + "row deleted")
+	print(str(result.rowcount) + " row deleted");
+	return redirect('/browse_officials')
