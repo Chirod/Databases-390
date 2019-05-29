@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Browse Players</title>
+  </head>
+
+  <h3>
+    <a href='/'>Home</a>
+  </h3>
+
+  <h3>
+    <a href='/add_tournament'>Add New Tournament</a>
+  </h3>
+
+  <h3>Current Tournaments</h3>
+  <table border='1'>
+    <thead>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Format</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Official Name</th>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td> {{ r.0 }}</td>
+        <td> {{ r[1] }}</td>
+        <td> {{ r[2] }}</td>
+        <td> {{ r[3] }}</td>
+        <td> {{ r[4] }}</td>
+        <td> {{ r[5] }}</td>
+        <td>
+          <input type='button' name='Update' value='Update'
+            onclick="window.location = '/update_tournament/{{r[0]}}'">
+        </td>
+        <td>
+          <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_tournament/{{r[0]}}'">
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</html>

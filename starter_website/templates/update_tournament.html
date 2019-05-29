@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>Update Tournament</title>
+  </head>
+  <h3>Update Tournament:</h3>
+  <form id="update_tournament" action="/update_tournament/{{tourny[0]}}" method="post">
+    <input type="hidden" name="id" value = "{{ tourny[0] }}">
+    Name: <input type="text" name="name" value="{{tourny[1]}}"><br><br>
+    Official Name: <select name="official" value="">
+                      {% for o in officials %}
+                   <option value={{o[2]}}> {{o[0]}} {{o[1]}} </option>
+                      {% endfor %}
+                   </select><br><br>
+    Tournament Format: <input type="text" name="format" value="{{tourny[3]}}"><br><br>
+    Start Date:<input type="date" name="sd" value="{{tourny[4]}}"><br><br>
+    <input type="submit" value="Submit">
+  </form>
+  <br/>
+</html>

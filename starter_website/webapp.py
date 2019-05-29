@@ -70,6 +70,75 @@ def delete_player(id):
 	print(str(result.rowcount) + " row deleted");
 	return redirect('/browse_players')
 
+@webapp.route('/browse_tournaments')
+def browse_tournaments():
+	print("Fetching and rendering tournaments web page")
+	db_connection = connect_to_database()
+	query = "SELECT t.id, t.name, t.format, t.start_date, t.end_date, CONCAT(o.first_name,' ',o.last_name) from tournaments t INNER JOIN officials o ON t.official_id = o.id;"
+	result = execute_query(db_connection, query).fetchall();
+	print(result)
+	return render_template('browse_tournaments.html', rows=result)
+
+@webapp.route("/add_tournament", methods=["GET", "POST"])
+def addTournament():
+	db_connection = connect_to_database()
+	query = "select first_name, last_name, id from officials;"
+	officials = execute_query(db_connection, query)
+	if request.method == "POST":
+		query = "insert into tournaments (name, format, start_date, official_id) values (%s, %s, %s, %s);"
+		print(request.form)
+		name = request.form["name"]
+		t_format = request.form["format"]
+		start_date = request.form["sd"]
+		official_id = request.form["Official"]
+		data = (name, t_format, start_date, official_id)
+		print(data)
+		execute_query(db_connection, query, data)
+		return redirect('/browse_tournaments')
+	return render_template("add_tournament.html", officials = officials)
+
+@webapp.route('/update_tournament/<int:id>', methods=['POST','GET'])
+def update_tournament(id):
+	db_connection = connect_to_database()
+	#display existing data
+	if request.method == 'GET':
+		officials_query = "select first_name, last_name, id from officials;"
+		officials_result = execute_query(db_connection, officials_query)
+		tournament_query = 'SELECT id, name, official_id, format, start_date from tournaments WHERE id = %s' % (id)
+		tournament_result = execute_query(db_connection, tournament_query).fetchone()
+
+		if tournament_result == None:
+			return "No such tournament found!"
+
+		return render_template('update_tournament.html', officials = officials_result, tourny = tournament_result)
+	elif request.method == 'POST':
+		print("Update Tournament!");
+		id = request.form['id']
+		name = request.form['name']
+		official = request.form['official']
+		format = request.form['format']
+		start_date = request.form['sd']
+
+		print(request.form);
+
+		query = "UPDATE tournaments SET name = %s, format = %s, official_id = %s, start_date = %s WHERE id = %s"
+		data = (name, format, official, start_date, id)
+		result = execute_query(db_connection, query, data)
+		print(str(result.rowcount) + " row(s) updated");
+
+		return redirect('/browse_tournaments')
+
+@webapp.route('/delete_tournament/<int:id>')
+def delete_tournament(id):
+	'''deletes the tournament with the given id'''
+	db_connection = connect_to_database()
+	query = "DELETE FROM tournaments WHERE id = %s"
+	data = (id,)
+
+	result = execute_query(db_connection, query, data)
+	print(str(result.rowcount) + " row deleted");
+	return redirect('/browse_tournaments')
+
 @webapp.route("/add_player_to_tournament.html", methods=["GET", "POST"])
 def addPlayerToTournament():
 	db_connection = connect_to_database()
@@ -105,23 +174,6 @@ def addesult():
 		print(data)
 		execute_query(db_connection, query, data)
 	return render_template("add_result_to_tournament.html", players=players, tournaments=tournaments)
-
-@webapp.route("/add_tournament.html", methods=["GET", "POST"])
-def addTournament():
-	db_connection = connect_to_database()
-	query = "select first_name, last_name, id from officials;"
-	officials = execute_query(db_connection, query)
-	if request.method == "POST":
-		query = "insert into tournaments (name, format, start_date, official_id) values (%s, %s, %s, %s);"
-		print(request.form)
-		name = request.form["name"]
-		t_format = request.form["format"]
-		start_date = request.form["sd"]
-		official_id = request.form["Official"]
-		data = (name, t_format, start_date, official_id)
-		print(data)
-		execute_query(db_connection, query, data)
-	return render_template("add_tournament.html", officials = officials)
 
 @webapp.route("/end_tournament.html", methods=["GET", "POST"])
 def endTournament():
