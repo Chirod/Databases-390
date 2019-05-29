@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <title>Update Player</title>
+  </head>
+  <h3>Update Player:</h3>
+  <form id="update_player" action="/update_player/{{player[0]}}" method="post">
+    <input type="hidden" name="id" value = "{{ player[0] }}">
+    First name: <input type="text" name="fname" value = "{{ player[1] }}"><br>
+    Last name: <input type="text" name="lname" value = "{{ player[2] }}" ><br>
+    <input type="submit" value="Submit">
+  </form>
+  <br/>
+</html>
