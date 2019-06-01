@@ -64,7 +64,7 @@ def playerTournaments(pid):
 	data = (pid,)
 	player_query = "SELECT id, first_name, last_name FROM players WHERE id = %s;"
 	player_result = execute_query(db_connection, player_query, data).fetchone();
-	tournament_query = "SELECT t.id, t.name, t.format, t.start_date, t.end_date, o.first_name, o.last_name FROM tournaments t INNER JOIN officials o ON t.official_id = o.id INNER JOIN tournament_player tp ON tp.tid = t.id WHERE tp.pid = %s;"
+	tournament_query = "SELECT t.id, t.name, t.format, t.start_date, t.end_date, (SELECT o.first_name FROM officials o where o.id = t.official_id), (SELECT o.last_name FROM officials o where o.id = t.official_id) FROM tournaments t INNER JOIN tournament_player tp ON tp.tid = t.id WHERE tp.pid = %s;"
 	tournament_result = execute_query(db_connection, tournament_query, data).fetchall();
 	return render_template("player_tournaments.html", rows=tournament_result, player=player_result)
 
@@ -99,7 +99,7 @@ def playerResults(pid):
 	player_query = "SELECT id, first_name, last_name FROM players WHERE id = %s;"
 	data = (pid,)
 	player_result = execute_query(db_connection, player_query, data).fetchone();
-	query =	'SELECT r.id, t.name, r.round_id, r.match_id, r.outcome, r.score, o.first_name, o.last_name FROM results r INNER JOIN  tournaments t ON r.tournament_id = t.id INNER JOIN officials o ON o.id = t.official_id WHERE r.player_id = %s;'
+	query =	'SELECT r.id, t.name, r.round_id, r.match_id, r.outcome, r.score, (SELECT o.first_name FROM officials o where o.id = t.official_id), (SELECT o.last_name FROM officials o where o.id = t.official_id) FROM results r INNER JOIN  tournaments t ON r.tournament_id = t.id WHERE r.player_id = %s;'
 	results = execute_query(db_connection, query, data)
 	return render_template("player_results.html", rows=results, player=player_result)
 
@@ -173,12 +173,14 @@ def update_official(id):
         result = execute_query(db_connection, query, data)
         return redirect('/browse_officials')
 
-@webapp.route('/delete_official/<int:id>')
-def delete_official(id):
+@webapp.route('/delete_official/<int:oid>')
+def delete_official(oid):
 	'''deletes the official with the given id'''
 	db_connection = connect_to_database()
+	query = "UPDATE tournaments SET official_id = NULL WHERE official_id = %s"
+	data = (oid,)
+	result = execute_query(db_connection, query, data)
 	query = "DELETE FROM officials WHERE id = %s"
-	data = (id,)
 	result = execute_query(db_connection, query, data)
 	return redirect('/browse_officials')
 
@@ -230,7 +232,7 @@ def addOfficialTournament(oid):
 @webapp.route('/browse_tournaments')
 def browse_tournaments():
 	db_connection = connect_to_database()
-	query = "SELECT t.id, t.name, t.format, t.start_date, t.end_date, o.first_name, o.last_name FROM tournaments t INNER JOIN officials o ON t.official_id = o.id;"
+	query = "SELECT t.id, t.name, t.format, t.start_date, t.end_date, o.first_name, o.last_name FROM tournaments t, officials o WHERE t.official_id = o.id UNION SELECT t.id, t.name, t.format, t.start_date, t.end_date, NULL, NULL FROM tournaments t WHERE t.official_id is NULL;"
 	result = execute_query(db_connection, query).fetchall();
 	return render_template('browse_tournaments.html', rows=result)
 
@@ -326,7 +328,7 @@ def tournamentResults(tid):
 	tournament_query = "SELECT id, name FROM tournaments WHERE id = %s;"
 	data = (tid,)
 	tournament_result = execute_query(db_connection, tournament_query, data).fetchone();
-	query =	'SELECT r.id, p.first_name, p.last_name, r.round_id, r.match_id, r.outcome, r.score, o.first_name, o.last_name FROM results r INNER JOIN  tournaments t ON r.tournament_id = t.id INNER JOIN officials o ON o.id = t.official_id INNER JOIN players p ON p.id = r.player_id WHERE r.tournament_id = %s;'
+	query =	'SELECT r.id, p.first_name, p.last_name, r.round_id, r.match_id, r.outcome, r.score, (SELECT o.first_name FROM officials o WHERE o.id = t.official_id), (SELECT o.last_name FROM officials o WHERE o.id = t.official_id) FROM results r INNER JOIN  tournaments t ON r.tournament_id = t.id INNER JOIN players p ON p.id = r.player_id WHERE r.tournament_id = %s;'
 	results = execute_query(db_connection, query, data).fetchall();
 	return render_template("tournament_results.html", rows=results, tournament=tournament_result)
 

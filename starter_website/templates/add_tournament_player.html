@@ -20,7 +20,7 @@
     <h2>
       Select a Player to register for: {{tournament.1}}:
     </h2>
-    <form id="showPlayers" action="/add_player/{{tournament.0}}" method="post">
+    <form id="addTournamentPlayer" action="/add_tournament_player/{{tournament.0}}" method="post">
       Player Name: <select name="player">
         {% for p in players %}
         <option value={{p[0]}}> {{p[1]}} {{p[2]}} </option>
