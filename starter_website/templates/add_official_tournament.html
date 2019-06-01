@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Add Tournament For {{official.1}} {{official.2}}
+    </title>
+    <h4>
+      <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_officials'>Officials</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_tournaments'>Tournaments</a>&nbsp;&nbsp;&nbsp;
+    </h4>
+    <h1>
+      CS 390 Tournament Style Database
+    </h1>
+  </head>
+  <body>
+    <p>
+      <a href='/official_tournaments/{{official.0}}'>Tournaments Officiated By: {{official.1}} {{official.2}}</a>
+    </p>
+    <h2>
+      Enter Tournament Information:
+    </h2>
+    <form id="addOfficialTournament" action="/add_official_tournament/{{official.0}}" method="post">
+      Name: <input type="text" name="name" value=""><br><br>
+      Tournament Format: <input type="text" name="format" value=""><br><br>
+      Start Date:<input type="date" name="sd" value=""><br><br>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

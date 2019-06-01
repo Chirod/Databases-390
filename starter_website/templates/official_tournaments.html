@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Tournaments Officiated by {{official.1}} {{official.2}}
+    </title>
+    <h4>
+      <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_officials'>Officials</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_tournaments'>Tournaments</a>&nbsp;&nbsp;&nbsp;
+    </h4>
+    <h1>
+      CS 390 Tournament Style Database
+    </h1>
+  </head>
+  <body>
+    <h2>
+      Tournaments Officiated By: {{official.1}} {{official.2}}
+    </h2>
+    <p>
+      <a href='/add_official_tournament/{{official.0}}'>Add a Tournament For: {{official.1}} {{official.2}}</a>
+    </p>
+    <table border='1'>
+      <thead>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Format</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>View Players</th>
+        <th>View Results</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>
+          <td> {{ r.0 }}</td>
+          <td> {{ r[1] }}</td>
+          <td> {{ r[2] }}</td>
+          <td> {{ r[3] }}</td>
+          <td> {{ r[4] }}</td>
+          <td>
+            <input type='button' name='viewPlayers' value='Players' onclick="window.location = '/tournament_players/{{r[0]}}'">
+          </td>
+          <td>
+            <input type='button' name='viewResults' value='Results' onclick="window.location = '/tournament_results/{{r[0]}}'">
+          </td>
+          <td>
+            <input type='button' name='Update' value='Update' onclick="window.location = '/update_tournament/{{r[0]}}'">
+          </td>
+          <td>
+            <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_tournament/{{r[0]}}'">
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

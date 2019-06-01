@@ -1,13 +1,26 @@
 <html>
   <head>
-    <title>Update Official</title>
+    <title>
+      Update Official: {{official[1]}} {{official[2]}}
+    </title>
+    <h4>
+      <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_officials'>Officials</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_tournaments'>Tournaments</a>&nbsp;&nbsp;&nbsp;
+    </h4>
+    <h1>
+      CS 390 Tournament Style Database
+    </h1>
   </head>
-  <h3>Update Official:</h3>
-  <form id="update_official" action="/update_official/{{official[0]}}" method="post">
-    <input type="hidden" name="id" value = "{{ official[0] }}">
-    First name: <input type="text" name="fname" value = "{{ official[1] }}"><br>
-    Last name: <input type="text" name="lname" value = "{{ official[2] }}" ><br>
-    <input type="submit" value="Submit">
-  </form>
-  <br/>
+  <body>
+    <h2>
+      Update Official: {{official[1]}} {{official[2]}}
+    </h2>
+    <form id="update_official" action="/update_official/{{official[0]}}" method="post">
+      <input type="hidden" name="id" value = "{{ official[0] }}">
+      First name: <input type="text" name="fname" value = "{{ official[1] }}"><br>
+      Last name: <input type="text" name="lname" value = "{{ official[2] }}" ><br>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
 </html>

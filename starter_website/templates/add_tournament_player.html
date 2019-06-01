@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Add Player to {{tournament.1}}
+    </title>
+    <h4>
+      <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_officials'>Officials</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_tournaments'>Tournaments</a>&nbsp;&nbsp;&nbsp;
+    </h4>
+    <h1>
+      CS 390 Tournament Style Database
+    </h1>
+  </head>
+  <body>
+    <p>
+      <a href='/tournament_players/{{tournament.0}}'>Players For: {{tournament.1}}</a>
+    </p>
+    <h2>
+      Select a Player to register for: {{tournament.1}}:
+    </h2>
+    <form id="showPlayers" action="/add_player/{{tournament.0}}" method="post">
+      Player Name: <select name="player">
+        {% for p in players %}
+        <option value={{p[0]}}> {{p[1]}} {{p[2]}} </option>
+        {% endfor %}
+      </select><br><br>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

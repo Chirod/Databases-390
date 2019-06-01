@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>
-      End: {{tournament.1}}
+      Add a Player
     </title>
     <h4>
       <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
@@ -15,11 +15,12 @@
   </head>
   <body>
     <h2>
-      Enter Completion Date For: {{tournament.1}}
+      Enter Player's Information:
     </h2>
-    <form id="endTournament" action="/end_tournament/{{tournament.0}}" method="post">
-      End Date:<input type="date" name="endDate" value=""><br><br>
-      <input type="submit" value="End Tournament">
+    <form id="addPayer" action="/new_player" method="post">
+      First Name: <input type="text" name="fname" value=""><br><br>
+      Last Name: <input type="text" name="lname" value=""><br><br>
+      <input type="submit" value="Submit">
     </form>
   </body>
 </html>

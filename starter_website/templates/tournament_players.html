@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+	<head>
+		<title>
+			Players in {{tournament.1}}
+		</title>
+		<h4>
+      <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_officials'>Officials</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_tournaments'>Tournaments</a>&nbsp;&nbsp;&nbsp;
+    </h4>
+    <h1>
+      CS 390 Tournament Style Database
+    </h1>
+	</head>
+	<body>
+		<h2>
+			Players in: {{tournament.1}}
+		</h2>
+		<p>
+			<a href='/add_tournament_player/{{tournament.0}}'>Add a Player to: {{tournament.1}}</a>
+		</p>
+	  <table border='1'>
+	    <thead>
+	      <th>ID</th>
+	      <th>First Name</th>
+	      <th>Last Name</th>
+	    </thead>
+	    <tbody>
+	      {% for r in rows %}
+	      <tr>
+	        <td> {{ r.0 }}</td>
+	        <td> {{ r[1] }}</td>
+	        <td> {{ r[2] }}</td>
+	        <td>
+	          <input type='button' name='Remove' value='Remove' onclick="window.location = '/remove/{{tournament.0}}/{{r[0]}}'">
+	        </td>
+	      </tr>
+	      {% endfor %}
+	    </tbody>
+	  </table>
+	</body>
+</html>

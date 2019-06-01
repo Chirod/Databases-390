@@ -1,19 +1,33 @@
 <html>
   <head>
-    <title>Update Tournament</title>
+    <title>
+      Update Tournament {{tourny.1}}
+    </title>
+    <h4>
+      <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_officials'>Officials</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_tournaments'>Tournaments</a>&nbsp;&nbsp;&nbsp;
+    </h4>
+    <h1>
+      CS 390 Tournament Style Database
+    </h1>
   </head>
-  <h3>Update Tournament:</h3>
-  <form id="update_tournament" action="/update_tournament/{{tourny[0]}}" method="post">
-    <input type="hidden" name="id" value = "{{ tourny[0] }}">
-    Name: <input type="text" name="name" value="{{tourny[1]}}"><br><br>
-    Official Name: <select name="official" value="">
-                      {% for o in officials %}
-                   <option value={{o[2]}}> {{o[0]}} {{o[1]}} </option>
-                      {% endfor %}
-                   </select><br><br>
-    Tournament Format: <input type="text" name="format" value="{{tourny[3]}}"><br><br>
-    Start Date:<input type="date" name="sd" value="{{tourny[4]}}"><br><br>
-    <input type="submit" value="Submit">
-  </form>
-  <br/>
+  <body>
+    <h2>
+      Update Tournament: {{tourny.1}}
+    </h2>
+    <form id="update_tournament" action="/update_tournament/{{tourny[0]}}" method="post">
+      <input type="hidden" name="id" value = "{{ tourny[0] }}">
+      Name: <input type="text" name="name" value="{{tourny[1]}}"><br><br>
+      Official Name: <select name="official" value="">
+                        {% for o in officials %}
+                     <option value={{o[2]}}> {{o[0]}} {{o[1]}} </option>
+                        {% endfor %}
+                     </select><br><br>
+      Tournament Format: <input type="text" name="format" value="{{tourny[3]}}"><br><br>
+      Start Date:<input type="date" name="sd" value="{{tourny[4]}}"><br><br>
+      End Date:<input type="date" name="ed" value="{{tourny[5]}}"><br><br>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
 </html>

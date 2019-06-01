@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>
-      Results for {{player.1}} {{player.2}}
+      Results Officiated by {{official.1}} {{official.2}}
     </title>
     <h4>
       <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
@@ -15,20 +15,17 @@
   </head>
   <body>
     <h2>
-      Results For: {{player.1}} {{player.2}}
+      Results Officiated by {{official.1}} {{official.2}}
     </h2>
-    <p>
-      <a href='/add_player_result/{{player.0}}'>Add a Result</a>
-    </p>
     <table border='1'>
       <thead>
         <th>ID</th>
-        <th>Tournament Name</th>
+        <th>Tournament</th>
+        <th>Player</th>
         <th>Round #</th>
         <th>Match #</th>
         <th>Outcome</th>
         <th>Score</th>
-        <th>Official</th>
         <th>Delete</th>
       </thead>
       <tbody>
@@ -36,13 +33,13 @@
         <tr>
           <td> {{ r.0 }}</td>
           <td> {{ r[1] }}</td>
-          <td> {{ r[2] }}</td>
-          <td> {{ r[3] }}</td>
+          <td> {{ r[2] }} {{ r[3] }}</td>
           <td> {{ r[4] }}</td>
           <td> {{ r[5] }}</td>
-          <td> {{ r[6] }} {{ r[7] }}</td>
+          <td> {{ r[6] }}</td>
+          <td> {{ r[7] }}</td>
           <td>
-            <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_player_result/{{player.0}}/{{r[0]}}'">
+            <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_officials_result/{{official.0}}/{{r[0]}}'">
           </td>
         </tr>
         {% endfor %}

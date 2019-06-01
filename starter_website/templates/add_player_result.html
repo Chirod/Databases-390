@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Add Result for {{player.1}} {{player.2}}
+    </title>
+    <h4>
+      <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_officials'>Officials</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_tournaments'>Tournaments</a>&nbsp;&nbsp;&nbsp;
+    </h4>
+    <h1>
+      CS 390 Tournament Style Database
+    </h1>
+  </head>
+  <body>
+    <p>
+      <a href='/player_results/{{player.0}}'>Results For: {{player.1}} {{player.2}}</a>
+    </p>
+    <h2>
+      Enter Information to Add a Result For: {{player.1}} {{player.2}}
+    </h2>
+    <form id="addPlayerResult" action="/add_player_result/{{player.0}}" method="post">
+      Tournament Name: <select name="tournament">
+        {% for t in tournaments %}
+        <option value={{t[0]}}> {{t[1]}} </option>
+        {% endfor %}
+      </select></br></br>
+      <label for="round">Round Number: </label><input name="round" type="number" /></br>
+      <label for="match">Match Number: </label><input name="match" type="number" /></br>
+      Result: <select name="result">
+        <option value="Win" selected>Win</option>
+        <option value="Lose" >Lose</option>
+        <option value="Draw" >Draw</option>
+      </select><br><br>
+      <label for="score">Score: </label><input name="score" type="number" value="0" /></br></br>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>
