@@ -1,38 +1,53 @@
 <html>
   <head>
-    <title>Browse Players</title>
+    <title>
+      Browse Players
+    </title>
+    <h4>
+      <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_officials'>Officials</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_tournaments'>Tournaments</a>&nbsp;&nbsp;&nbsp;
+    </h4>
+    <h1>
+      CS 390 Tournament Style Database
+    </h1>
   </head>
-
-  <h3>
-    <a href='/'>Home</a>
-  </h3>
-
-  <h3>
-    <a href='/add_player_to_db'>Add New Player</a>
-  </h3>
-
-  <h3>Current Players</h3>
-  <table border='1'>
-    <thead>
-      <th>ID</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-    </thead>
-    <tbody>
-      {% for r in rows %}
-      <tr>
-        <td> {{ r.0 }}</td>
-        <td> {{ r[1] }}</td>
-        <td> {{ r[2] }}</td>
-        <td>
-          <input type='button' name='Update' value='Update'
-            onclick="window.location = '/update_player/{{r[0]}}'">
-        </td>
-        <td>
-          <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_player/{{r[0]}}'">
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <body>
+    <h2>Players</h2>
+    <p>
+      <a href='/new_player'>Add New Player</a>
+    </p>
+    <table border='1'>
+      <thead>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>View Tournaments</th>
+        <th>View Results</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>
+          <td> {{ r.0 }}</td>
+          <td> {{ r[1] }}</td>
+          <td> {{ r[2] }}</td>
+          <td>
+            <input type='button' name='viewTournaments' value='Tournaments' onclick="window.location = '/player_tournaments/{{r[0]}}'">
+          </td>
+          <td>
+            <input type='button' name='viewResults' value='Results' onclick="window.location = '/player_results/{{r[0]}}'">
+          </td>
+          <td>
+            <input type='button' name='Update' value='Update' onclick="window.location = '/update_player/{{r[0]}}'">
+          </td>
+          <td>
+            <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_player/{{r[0]}}'">
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
 </html>

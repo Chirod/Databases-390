@@ -1,9 +1,22 @@
 <!doctype html>
 <html>
   <head>
-    <title> Add a Tournament</title>
+    <title>
+      Add a Tournament
+    </title>
+    <h4>
+      <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_officials'>Officials</a>&nbsp;&nbsp;&nbsp;
+      <a href='/browse_tournaments'>Tournaments</a>&nbsp;&nbsp;&nbsp;
+    </h4>
+    <h1>
+      CS 390 Tournament Style Database
+    </h1>
   </head>
   <body>
+    <h2>
+      Enter Tournament Information:
+    </h2>
     <form id="addTournament" action="/add_tournament" method="post">
       Name: <input type="text" name="name" value=""><br><br>
       Official Name: <select name="Official">

@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS players, tournaments, tournament_player, results, officials;
+
 create table players(
 	id int(11) auto_increment,
 	first_name varchar(50) not null,
@@ -18,15 +20,15 @@ create table tournaments(
 	format varchar(50) not null,
 	start_date date not null,
 	end_date date,
-	official_id int(11),
+	official_id int(11) null,
 	primary key (id),
 	foreign key (official_id) references officials(id)
 );
 
 create table results(
 	id int(11) auto_increment,
-	tournament_id int(11) not null, 
-	round_id int(11) not null, 
+	tournament_id int(11) not null,
+	round_id int(11) not null,
 	match_id int(11) not null,
 	player_id int(11) not null,
 	outcome varchar(50) not null,

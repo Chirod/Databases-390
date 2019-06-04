@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>
-      Results for {{player.1}} {{player.2}}
+      Tournaments For {{player.1}} {{player.2}}
     </title>
     <h4>
       <a href='/browse_players'>Players</a>&nbsp;&nbsp;&nbsp;
@@ -15,21 +15,20 @@
   </head>
   <body>
     <h2>
-      Results For: {{player.1}} {{player.2}}
+      Tournaments For: {{player.1}} {{player.2}}
     </h2>
     <p>
-      <a href='/add_player_result/{{player.0}}'>Add a Result</a>
+      <a href='/add_player_tournament/{{player.0}}'>Register {{player.1}} {{player.2}} For a Tournament</a>
     </p>
     <table border='1'>
       <thead>
         <th>ID</th>
-        <th>Tournament Name</th>
-        <th>Round #</th>
-        <th>Match #</th>
-        <th>Outcome</th>
-        <th>Score</th>
-        <th>Official</th>
-        <th>Delete</th>
+        <th>Name</th>
+        <th>Format</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Official Name</th>
+        <th>Drop Out</th>
       </thead>
       <tbody>
         {% for r in rows %}
@@ -39,10 +38,9 @@
           <td> {{ r[2] }}</td>
           <td> {{ r[3] }}</td>
           <td> {{ r[4] }}</td>
-          <td> {{ r[5] }}</td>
-          <td> {{ r[6] }} {{ r[7] }}</td>
+          <td> {{ r[5] }} {{ r[6] }}</td>
           <td>
-            <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_player_result/{{player.0}}/{{r[0]}}'">
+            <input type='button' name='dropOut' value='Drop Out' onclick="window.location = '/dropout/{{player.0}}/{{r[0]}}'">
           </td>
         </tr>
         {% endfor %}
