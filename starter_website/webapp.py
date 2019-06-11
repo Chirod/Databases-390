@@ -53,9 +53,13 @@ def update_player(id):
 def delete_player(id):
 	'''deletes the player with the given id'''
 	db_connection = connect_to_database()
-	query = "DELETE FROM players WHERE id = %s"
+	querys = []
+	querys.append("delete from results where player_id = %s")
+	querys.append("delete from tournament_player where pid = %s")
+	querys.append("DELETE FROM players WHERE id = %s")
 	data = (id,)
-	result = execute_query(db_connection, query, data)
+	for query in querys:
+		result = execute_query(db_connection, query, data)
 	return redirect('/browse_players')
 
 @webapp.route("/player_tournaments/<int:pid>")
@@ -281,9 +285,13 @@ def update_tournament(tid):
 def delete_tournament(id):
 	'''deletes the tournament with the given id'''
 	db_connection = connect_to_database()
-	query = "DELETE FROM tournaments WHERE id = %s"
+	querys = []
+	querys.append("delete from results where tournament_id = %s")
+	querys.append("delete from tournament_player where tid = %s")
+	querys.append("DELETE FROM tournaments WHERE id = %s")
 	data = (id,)
-	result = execute_query(db_connection, query, data)
+	for query in querys:
+		result = execute_query(db_connection, query, data)
 	return redirect('/browse_tournaments')
 
 @webapp.route("/tournament_players/<int:tid>")
